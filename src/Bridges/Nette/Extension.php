@@ -42,17 +42,19 @@ class Extension extends CompilerExtension
             ->setFactory(LoginForm::class, [$formContainer, $events])
             ->setAutowired($config['autowired']);
 
-        // special way for combine driver
-        if ($config['driver']->getEntity() == CombineDriver::class) {
-            foreach ($config['driver']->arguments[0] as $index => $argument) {
-                $builder->addDefinition($this->prefix('driver.' . $index))
-                    ->setFactory($argument)
-                    ->setAutowired('self');
+        if ($config['driver']) {
+            // special way for combine driver
+            if ($config['driver']->getEntity() == CombineDriver::class) {
+                foreach ($config['driver']->arguments[0] as $index => $argument) {
+                    $builder->addDefinition($this->prefix('driver.' . $index))
+                        ->setFactory($argument)
+                        ->setAutowired('self');
+                }
             }
-        }
 
-        $builder->addDefinition($this->prefix('driver'))
-            ->setFactory($config['driver'])
-            ->setAutowired($config['autowired']);
+            $builder->addDefinition($this->prefix('driver'))
+                ->setFactory($config['driver'])
+                ->setAutowired($config['autowired']);
+        }
     }
 }
