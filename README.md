@@ -5,11 +5,11 @@ Installation
 ------------
 
 ```sh
-$ composer require geniv/nette-identity-authenticator
+$ composer require geniv/nette-identity-login
 ```
 or
 ```json
-"geniv/nette-identity-authenticator": ">=1.0.0"
+"geniv/nette-identity-login": ">=1.0.0"
 ```
 
 require:
