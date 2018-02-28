@@ -23,10 +23,12 @@ Include in application
 ----------------------
 
 ### available source drivers:
-- Identity\Authenticator\Drivers\ArrayDriver (base ident: key, id, hash)
-- Identity\Authenticator\Drivers\NeonDriver (same format like Array)
-- Identity\Authenticator\Drivers\DibiDriver (base ident: id, login, hash, active, role, added)
-- Identity\Authenticator\Drivers\CombineDriver (combine driver Array, Neon, Dibi; order authenticate define combineOrder)
+- Identity\Authenticator\Drivers\ArrayDriver
+- Identity\Authenticator\Drivers\NeonDriver
+- Identity\Authenticator\Drivers\DibiDriver
+- Identity\Authenticator\Drivers\CombineDriver
+
+via: https://github.com/geniv/nette-identity-authenticator
 
 hash is return from: `Passwords::hash($password)`
 
@@ -36,14 +38,13 @@ neon configure:
 identityLogin:
 #   autowired: true
 #   formContainer: Identity\Login\FormContainer
-#   driver: Identity\Authenticator\Drivers\ArrayDriver()
+#   driver: Identity\Authenticator\Drivers\ArrayDriver([])
 #   driver: Identity\Authenticator\Drivers\NeonDriver(%appDir%/authenticator.neon)
     driver: Identity\Authenticator\Drivers\DibiDriver(%tablePrefix%)
 #   driver: Identity\Authenticator\Drivers\CombineDriver([
 #       Identity\Authenticator\Drivers\DibiDriver(%tablePrefix%),
 #       Identity\Authenticator\Drivers\NeonDriver(%appDir%/authenticator.neon)
-#       Identity\Authenticator\Drivers\ArrayDriver([])
-#       ])
+#   ])
     events:
         - Identity\Login\Events\LoginEvent
 ```
@@ -56,7 +57,7 @@ extensions:
 
 presenters:
 ```php
-protected function createComponentIdentityLogin(LoginForm $loginForm)
+protected function createComponentIdentityLogin(LoginForm $loginForm): LoginForm
 {
     //$loginForm->setTemplatePath(__DIR__ . '/templates/LoginForm.latte');
     $loginForm->onLoggedIn[] = function (User $user) {
