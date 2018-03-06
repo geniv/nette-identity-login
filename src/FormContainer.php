@@ -2,7 +2,6 @@
 
 namespace Identity\Login;
 
-
 use GeneralForm\IFormContainer;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;

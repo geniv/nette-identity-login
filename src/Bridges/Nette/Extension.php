@@ -3,7 +3,6 @@
 namespace Identity\Login\Bridges\Nette;
 
 use GeneralForm\GeneralForm;
-use Identity\Authenticator\Drivers\CombineDriver;
 use Identity\Login\FormContainer;
 use Identity\Login\LoginForm;
 use Nette\DI\CompilerExtension;
@@ -20,9 +19,7 @@ class Extension extends CompilerExtension
     /** @var array default values */
     private $defaults = [
         'autowired'     => true,
-        'driver'        => null,
         'formContainer' => FormContainer::class,
-        'events'        => [],
     ];
 
 
@@ -35,26 +32,10 @@ class Extension extends CompilerExtension
         $config = $this->validateConfig($this->defaults);
 
         $formContainer = GeneralForm::getDefinitionFormContainer($this);
-        $events = GeneralForm::getDefinitionEventContainer($this);
 
         // define form
         $builder->addDefinition($this->prefix('form'))
-            ->setFactory(LoginForm::class, [$formContainer, $events])
+            ->setFactory(LoginForm::class, [$formContainer])
             ->setAutowired($config['autowired']);
-
-        if ($config['driver']) {
-            // special way for combine driver
-            if ($config['driver']->getEntity() == CombineDriver::class) {
-                foreach ($config['driver']->arguments[0] as $index => $argument) {
-                    $builder->addDefinition($this->prefix('driver.' . $index))
-                        ->setFactory($argument)
-                        ->setAutowired('self');
-                }
-            }
-
-            $builder->addDefinition($this->prefix('driver'))
-                ->setFactory($config['driver'])
-                ->setAutowired($config['autowired']);
-        }
     }
 }

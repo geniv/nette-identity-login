@@ -2,13 +2,12 @@
 
 namespace Identity\Login;
 
-use GeneralForm\EventContainer;
-use GeneralForm\IEventContainer;
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
 use Nette\Application\UI\Control;
+use Nette\Security\AuthenticationException;
 
 
 /**
@@ -21,8 +20,6 @@ class LoginForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
-    /** @var IEventContainer */
-    private $eventContainer;
     /** @var ITranslator */
     private $translator;
     /** @var string */
@@ -35,15 +32,13 @@ class LoginForm extends Control implements ITemplatePath
      * LoginForm constructor.
      *
      * @param IFormContainer   $formContainer
-     * @param array            $events
      * @param ITranslator|null $translator
      */
-    public function __construct(IFormContainer $formContainer, array $events, ITranslator $translator = null)
+    public function __construct(IFormContainer $formContainer, ITranslator $translator = null)
     {
         parent::__construct();
 
         $this->formContainer = $formContainer;
-        $this->eventContainer = EventContainer::factory($this, $events);
         $this->translator = $translator;
 
         $this->templatePath = __DIR__ . '/LoginForm.latte'; // set path
@@ -86,7 +81,15 @@ class LoginForm extends Control implements ITemplatePath
         $form->setTranslator($this->translator);
         $this->formContainer->getForm($form);
 
-        $form->onSuccess[] = $this->eventContainer;
+        $form->onSuccess[] = function (Form $form, array $values) {
+            try {
+                $user = $this->getPresenter()->getUser();
+                $user->login($values['username'], $values['password']);
+                $this->onLoggedIn($user); // success callback
+            } catch (AuthenticationException $e) {
+                $this->onLoggedInException($e); // exception callback
+            }
+        };
         return $form;
     }
 
