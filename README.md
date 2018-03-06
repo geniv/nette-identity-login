@@ -22,31 +22,12 @@ require:
 Include in application
 ----------------------
 
-### available source drivers:
-- Identity\Authenticator\Drivers\ArrayDriver
-- Identity\Authenticator\Drivers\NeonDriver
-- Identity\Authenticator\Drivers\DibiDriver
-- Identity\Authenticator\Drivers\CombineDriver
-
-via: https://github.com/geniv/nette-identity-authenticator
-
-hash is return from: `Passwords::hash($password)`
-
 neon configure:
 ```neon
 # identity login
 identityLogin:
 #   autowired: true
 #   formContainer: Identity\Login\FormContainer
-#   driver: Identity\Authenticator\Drivers\ArrayDriver([])
-#   driver: Identity\Authenticator\Drivers\NeonDriver(%appDir%/authenticator.neon)
-    driver: Identity\Authenticator\Drivers\DibiDriver(%tablePrefix%)
-#   driver: Identity\Authenticator\Drivers\CombineDriver([
-#       Identity\Authenticator\Drivers\DibiDriver(%tablePrefix%),
-#       Identity\Authenticator\Drivers\NeonDriver(%appDir%/authenticator.neon)
-#   ])
-    events:
-        - Identity\Login\Events\LoginEvent
 ```
 
 neon configure extension:
