@@ -3,7 +3,6 @@
 namespace Identity\Login;
 
 use GeneralForm\IFormContainer;
-use GeneralForm\ITemplatePath;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
 use Nette\Application\UI\Control;
@@ -16,7 +15,7 @@ use Nette\Security\AuthenticationException;
  * @author  geniv
  * @package Identity\Login
  */
-class LoginForm extends Control implements ITemplatePath
+class LoginForm extends Control implements ILoginForm
 {
     /** @var IFormContainer */
     private $formContainer;
