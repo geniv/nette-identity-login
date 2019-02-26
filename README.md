@@ -9,7 +9,7 @@ $ composer require geniv/nette-identity-login
 ```
 or
 ```json
-"geniv/nette-identity-login": "^1.0"
+"geniv/nette-identity-login": "^1.1"
 ```
 
 require:

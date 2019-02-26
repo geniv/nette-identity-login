@@ -25,12 +25,12 @@ class FormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $form->addText('username', 'login-form-username')
-            ->setRequired('login-form-username-required');
+        $form->addText('username', 'login-form#username')
+            ->setRequired('login-form#username-required');
 
-        $form->addPassword('password', 'login-form-password')
-            ->setRequired('login-form-password-required');
+        $form->addPassword('password', 'login-form#password')
+            ->setRequired('login-form#password-required');
 
-        $form->addSubmit('send', 'login-form-send');
+        $form->addSubmit('send', 'login-form#send');
     }
 }
