@@ -9,13 +9,16 @@ $ composer require geniv/nette-identity-login
 ```
 or
 ```json
-"geniv/nette-identity-login": "^1.0"
+"geniv/nette-identity-login": "^1.1"
 ```
 
 require:
 ```json
 "php": ">=7.0",
-"nette/nette": ">=2.4",
+"nette/application": ">=2.4",
+"nette/di": ">=2.4",
+"nette/security": ">=2.4",
+"nette/utils": ">=2.4",
 "geniv/nette-general-form": ">=1.0"
 ```
 
