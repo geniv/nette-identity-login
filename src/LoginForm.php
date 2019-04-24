@@ -23,7 +23,7 @@ class LoginForm extends Control implements ILoginForm
     private $translator;
     /** @var string */
     private $templatePath;
-    /** @var callback */
+    /** @var callable */
     public $onLoggedIn, $onLoggedInException, $onLoggedOut;
 
 
@@ -99,9 +99,9 @@ class LoginForm extends Control implements ILoginForm
     public function handleOut()
     {
         $user = $this->getPresenter()->getUser();
-        $user->logout(true);
-        if (!$user->isLoggedIn()) {
+        if ($user->isLoggedIn()) {
             $this->onLoggedOut($user);  // logout callback
+            $user->logout(true);
         }
     }
 }
