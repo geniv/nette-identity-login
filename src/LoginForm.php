@@ -3,9 +3,9 @@
 namespace Identity\Login;
 
 use GeneralForm\IFormContainer;
+use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
-use Nette\Application\UI\Control;
 use Nette\Security\AuthenticationException;
 
 
@@ -24,7 +24,7 @@ class LoginForm extends Control implements ILoginForm
     /** @var string */
     private $templatePath;
     /** @var callable */
-    public $onLoggedIn, $onLoggedInException, $onLoggedOut;
+    public $onLoggedIn, $onAfterLoggedIn, $onLoggedInException, $onLoggedOut, $onAfterLoggedOut;
 
 
     /**
@@ -81,13 +81,14 @@ class LoginForm extends Control implements ILoginForm
         $this->formContainer->getForm($form);
 
         $form->onSuccess[] = function (Form $form, array $values) {
+            $user = $this->getPresenter()->getUser();
             try {
-                $user = $this->getPresenter()->getUser();
                 $user->login($values['username'], $values['password']);
                 $this->onLoggedIn($user); // success callback
             } catch (AuthenticationException $e) {
                 $this->onLoggedInException($e); // exception callback
             }
+            $this->onAfterLoggedIn($user); // after login
         };
         return $form;
     }
@@ -102,6 +103,7 @@ class LoginForm extends Control implements ILoginForm
         if ($user->isLoggedIn()) {
             $this->onLoggedOut($user);  // logout callback
             $user->logout(true);
+            $this->onAfterLoggedOut($user); // after logout
         }
     }
 }

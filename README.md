@@ -46,6 +46,8 @@ protected function createComponentIdentityLogin(ILoginForm $loginForm): ILoginFo
     //$loginForm->setTemplatePath(__DIR__ . '/templates/LoginForm.latte');
     $loginForm->onLoggedIn[] = function (User $user) {
         $this->flashMessage('Login!', 'info');
+    };
+    $loginForm->onAfterLoggedIn[] = function (User $user) {
         $this->redirect('this');
     };
     $loginForm->onLoggedInException[] = function (AuthenticationException $e) {
@@ -53,6 +55,8 @@ protected function createComponentIdentityLogin(ILoginForm $loginForm): ILoginFo
     };
     $loginForm->onLoggedOut[] = function (User $user) {
         $this->flashMessage('Logout!', 'info');
+    };
+    $loginForm->onAfterLoggedOut[] = function (User $user) {
         $this->redirect('this');
     };
     return $loginForm;
